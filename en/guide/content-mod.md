@@ -1,6 +1,6 @@
 # Walkthrough: `pvz-content-mod`
 
-This chapter reads `pvz-content-mod` file by file — the most complete teaching mod of the workspace. It adds
+This chapter reads `pvz-content-mod` file by file — the most complete teaching mod in these chapters. It adds
 three plants (a Red Peashooter, a Red Repeater and a Red Gatling Pea), ships not a single texture, builds all
 of its art by "the game draws it, the mod recolours it at runtime", and comes with an end-to-end test on the
 real loader.

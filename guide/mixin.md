@@ -4,7 +4,7 @@ Mixin 让你在不碰游戏源码的前提下改写游戏类的字节码。这�
 自带的 **Sponge Mixin**（随 Loader 0.19.5 一起，`net.fabricmc:sponge-mixin`），所以
 `@Mixin` / `@Inject` / `@At` 的语义与 Minecraft 模组完全一致。
 
-本工作区的三个前提决定了写法：
+这个移植版的三个前提决定了写法：
 
 1. **没有混淆映射**：游戏类名、方法名、字段名就是源码里的名字，目标直接写 `"startLevel()V"`、
    `"randRangeInt(II)I"` 这种描述符，**不需要 refmap**。
@@ -219,7 +219,7 @@ javap -c -cp build/pvz/dist/PvZ-Portable-1.2.5/PvZ-Portable-1.2.5.jar \
 | 字段 | 含义 |
 | --- | --- |
 | `package` | mixin 类所在的包；`mixins` 数组里写的是**相对这个包**的类名 |
-| `compatibilityLevel` | 本工作区固定 `JAVA_25`（游戏类是 Java 25 字节码） |
+| `compatibilityLevel` | 这个移植版固定 `JAVA_25`（游戏类是 Java 25 字节码） |
 | `mixins` | 通用 mixin 列表（桌面游戏没有 client/server 之分，写这里就行） |
 | `injectors.defaultRequire` | 每个注入点默认要求命中几次（`1` = 目标方法/注入点必须存在） |
 | `minVersion` | 需要的 Mixin 版本下限，`"0.8"` 是常规值 |
@@ -357,10 +357,10 @@ public final class BoardMixin {
 | 坑 | 说明 |
 | --- | --- |
 | 目标方法签名 | 描述符必须逐字符一致（`"startLevel()V"` 而不是 `"startLevel"`）。**用 `javap` 对着发行包的 jar 核对**，不要凭猜 |
-| 混淆 | 本工作区**没有**混淆映射，也不生成 refmap：写的就是源码名。反之，从 Minecraft 模组抄来的 refmap 写法在这里没有意义 |
+| 混淆 | 这个移植版**没有**混淆映射，也不生成 refmap：写的就是源码名。反之，从 Minecraft 模组抄来的 refmap 写法在这里没有意义 |
 | 静态 vs 实例 | 静态目标配静态回调，实例目标配实例回调；`@Inject` 的处理器是实例方法时才允许用 `this` |
 | `this` 的类型 | mixin 类不是目标类，想把 `this` 当目标类型用要显式转换：`Board self = (Board) (Object) this;` |
-| `@Shadow` 的可见性 | shadow 的可见性不比目标更宽才最安全（工作区里的例子是把 `public` 字段 shadow 成 `private`）；**不要** shadow 一个带编译期常量初值的 `static final` 字段并期望读到运行时值——javac 会把常量内联 |
+| `@Shadow` 的可见性 | shadow 的可见性不比目标更宽才最安全（示例里的写法是把 `public` 字段 shadow 成 `private`）；**不要** shadow 一个带编译期常量初值的 `static final` 字段并期望读到运行时值——javac 会把常量内联 |
 | 常量 vs 字段 | `@ModifyConstant` 只匹配字节码里的字面常量；来自静态字段的值要 `@Redirect` |
 | 注入点的副作用 | `@Redirect` / `@ModifyConstant` 是真的替换游戏行为。别在"我没启用"的路径上漏掉原实现——例子里的 `if (!SunTuning.enabled) return PvzpCommon.randRangeInt(theMin, theMax);` 就是这条 |
 | 每 tick 的注入点 | `Board::update`、`LawnEvents.TICK` 这类每 tick / 每帧的入口里别做重活 |
@@ -372,7 +372,7 @@ public final class BoardMixin {
 
 1. **启动日志**：`./gradlew runClient`，看目标是"注入了"还是"没注入"，以及你自己的计数/日志行。
 2. **诊断计数 + 单元/端到端测试**：像上面的 `SunTuning.levelsStarted` / `sunDropsRewritten` 那样把
-   "注入跑过"变成可断言的状态；工作区的 `pvz-example-mod` 就是这么做的——它的
+   "注入跑过"变成可断言的状态；`pvz-example-mod` 就是这么做的——它的
    `LawnCommonMixin` 把一个静态标志置位，测试据此断言字节码变换跑过。
 3. **真 Loader 的端到端测试**：把模组 jar 放进一个临时 `mods/` 目录，在第二个 JVM 里用真正的
    `net.fabricmc.loader.impl.launch.knot.KnotClient` 启动，让游戏主类被换成测试的 harness，
@@ -383,7 +383,7 @@ public final class BoardMixin {
 
 ## 8. 为什么 Mixin 用 Java 写
 
-工作区的模组主体可以是 Kotlin，但 **Mixin 类一律 Java**（放 `src/main/java/.../mixin/`）。
+模组主体可以是 Kotlin，但 **Mixin 类一律 Java**（放 `src/main/java/.../mixin/`）。
 原因不在工具链，而在 Mixin 本身的机制：它的注解由 Mixin 自己的处理器读，`@Shadow` 等语义依赖
 "把 mixin 类里的成员引用改写到目标类"这套 Java 字节码规则。Kotlin 生成属性访问器、协变返回、
 内联函数会让这套规则难以推理；四个模组、十几个 mixin 类全部用 Java 写，就是为了不在这上面赌。

@@ -2,7 +2,7 @@
 
 一个模组工程的骨架非常小：两个构建脚本、一个 `fabric.mod.json`、一个入口点类。工具链只负责游戏本身，
 其余依赖都由模组在自己的构建脚本里声明。
-这一章以 `pvz-content-mod/` 为例逐个文件讲——它是工作区里最完整的模组工程（三株植物、
+这一章以 `pvz-content-mod/` 为例逐个文件讲——它是示例模组里最完整的工程（三株植物、
 艺术管线、端到端测试），也是[实例精读](./content-mod.md)的主角。
 
 ## 1. 目录树
@@ -253,8 +253,8 @@ dependencies {
 
 工具链把这些 jar **原样**放进你的 jar 的 `META-INF/jars/`，并在打包后的 `fabric.mod.json` 里写上
 `"jars": [ { "file": "META-INF/jars/<文件名>.jar" } ]`。十个字节都不改：嵌套 jar 带着自己的
-`fabric.mod.json`、id、版本与入口点，被 Loader 当作**独立的模组**加载。工作区的 `fabric-api`
-聚合 jar 正是这样把五个 `api-*` 模块装在自己里面。
+`fabric.mod.json`、id、版本与入口点，被 Loader 当作**独立的模组**加载。`fabric-api` 聚合 jar
+正是这样把五个 `api-*` 模块装在自己里面。
 
 两个失败模式值得知道：两个 `include` 的文件重名会在构建时失败（嵌套 jar 在模组 jar 里靠名字寻址）；
 带了嵌套 jar 却没有 `fabric.mod.json` 可写 `jars` 数组也会失败（Loader 永远读不到它们）。

@@ -135,7 +135,7 @@ There are two answers:
    call ([Mixin experiments](./mixin.md) has a complete example). Then the rewriting is explicit in the
    code instead of hiding inside an event listener.
 
-The workspace's `pvz-mod-95-edition` takes the second road: its bite rule and its seed-packet rewrite are
+`pvz-mod-95-edition` takes the second road: its bite rule and its seed-packet rewrite are
 **implementations of the game's hooks**, not `api-events` listeners — because those two rules want to
 *answer for the game*, not to know that something happened.
 

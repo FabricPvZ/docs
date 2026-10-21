@@ -27,7 +27,7 @@ Mixin 应用之后，而这套环境在普通的 JUnit 进程里不存在。这�
 
 ## 3. 端到端测试：真 Loader + 真资源 + 报告文件
 
-工作区里 `pvz-content-mod` 与 `pvz-mod-95-edition` 都写了这种测试。它的形状是固定的：
+`pvz-content-mod` 与 `pvz-mod-95-edition` 都写了这种测试。它的形状是固定的：
 
 1. **打包**：`./gradlew test` 依赖 `jar`（工具链把 jar 的绝对路径放进测试 fork 的系统属性
    `pvz.test.modJar`），测试把这个 jar 复制进一个临时 `mods/` 目录。JUnit 本身由模组声明
@@ -88,7 +88,7 @@ command.add(runDir.resolve("userdata").toString());
 ```
 
 把 `cn.enaium.fabricpvz:<your-mod>:<version>` 发布到 `~/.m2/repository`，
-别的工程就能 `dependencies { modImplementation(...) }` 式地依赖它（工作区里 `PvZ-Portable` 的
+别的工程就能 `dependencies { modImplementation(...) }` 式地依赖它（`PvZ-Portable` 的
 端到端测试就是拿 mavenLocal 里的模组 jar 用的）。POM 元数据（MIT 许可等）由工具链的约定提供。
 
 ### 给玩家：把 jar 放进 `mods/`

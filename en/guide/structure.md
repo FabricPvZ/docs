@@ -2,7 +2,7 @@
 
 A mod project is small: two build scripts, one `fabric.mod.json` and one entry point class. The toolchain
 supplies the game itself; every other dependency is declared by the mod in its own build script. This
-chapter walks through `pvz-content-mod/` file by file — the most complete mod of the workspace (three
+chapter walks through `pvz-content-mod/` file by file — the most complete of the example mods (three
 plants, an art pipeline, an end-to-end test) and the subject of the [walkthrough](./content-mod.md).
 
 ## 1. The directory tree
@@ -275,7 +275,7 @@ dependencies {
 The toolchain copies those jars into `META-INF/jars/` of your jar **as they are** and writes
 `"jars": [ { "file": "META-INF/jars/<name>.jar" } ]` into the packaged `fabric.mod.json`. Nothing is
 renamed or merged: a nested jar keeps its own `fabric.mod.json`, id, version and entry points, and the
-loader loads it as a **mod of its own**. The workspace's `fabric-api` aggregate ships its five `api-*`
+loader loads it as a **mod of its own**. The `fabric-api` aggregate ships its five `api-*`
 modules exactly that way.
 
 Two failure modes are worth knowing: two `include`d files sharing a name fail the build (a nested jar is

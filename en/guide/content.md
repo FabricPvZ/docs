@@ -209,10 +209,10 @@ BoardOverrides.numWaves(40, 50);               // where the game's own branch sa
 ## 2. Registering a zombie
 
 ::: tip Where this code comes from
-No mod of the workspace registers a new zombie today, so the example below is the one from
+None of the example mods registers a new zombie today, so the example below is the one from
 `api-zombie`'s own usage notes; it compiles against the 1.2.5 version package (the game jar with
-`cn.enaium.fabricpvz:fabric-api:1.2.2`) at `javac --release 25`. The real "changing a zombie" usage in the
-workspace is `pvz-mod-95-edition`'s `ZombieOverrides` (below), which changes retail zombies' spawn numbers.
+`cn.enaium.fabricpvz:fabric-api:1.2.2`) at `javac --release 25`. The real "changing a zombie" usage is
+`pvz-mod-95-edition`'s `ZombieOverrides` (below), which changes retail zombies' spawn numbers.
 :::
 
 ```java
@@ -335,9 +335,9 @@ included) belong to `LawnEvents.ZOMBIE_DAMAGE` / `ZOMBIE_DEATH` from
    assets are preloaded.
 4. **Names and tooltips do not go through the game's string table** unless you use `stringKeyStem(...)`
    (which is how you get the game's own localisation) - and then you ship their translations yourself,
-   as `src/main/resources/i18n/<language>.json` in your own mod (the workspace's `pvz-i18n-mod/README.md`
-   has the full description): the i18n mod collects every loaded mod's table, so your text travels in your
-   jar instead of being written into someone else's table.
+   as `src/main/resources/i18n/<language>.json` in your own mod: the i18n support collects the table
+   every loaded mod ships in its own jar, so your text travels in your jar instead of being written into
+   someone else's table.
 5. **Only after `register()` returns is it content**: from there on, seed packets, the almanac,
    `Board::canPlantAt`, `Board::addPlant`, the seed chooser and `Plant::fire` treat it like a built-in.
 

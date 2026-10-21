@@ -119,7 +119,7 @@ coordinate at all. The toolchain neither supplies the API nor picks its version.
 
 ## Where to read the real implementations
 
-What you want to confirm, and the file to open (paths relative to the workspace root):
+What you want to confirm, and the file to open (paths relative to the repository root):
 
 | To confirm | Open |
 | --- | --- |

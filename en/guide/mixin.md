@@ -5,7 +5,7 @@ here is **not a home-grown implementation**: it is **Sponge Mixin**, which ships
 (`net.fabricmc:sponge-mixin`, together with Loader 0.19.5), so `@Mixin` / `@Inject` / `@At` behave exactly
 as they do in Minecraft mods.
 
-Three properties of this workspace shape how you write it:
+Three properties of this port shape how you write it:
 
 1. **There is no obfuscation mapping.** Class, method and field names are the names in the source, so a
    target is written directly as `"startLevel()V"` or `"randRangeInt(II)I"` — **no refmap**.
@@ -378,7 +378,7 @@ from "never ran".
 | Obfuscation | There is **no** mapping and no refmap here: you write the source name. Conversely, a refmap copied from a Minecraft mod is meaningless here |
 | Static vs instance | A static target takes a static handler, an instance target an instance handler; only an instance handler may use `this` |
 | The type of `this` | A mixin class is not the target class, so to use `this` as the target type you must cast: `Board self = (Board) (Object) this;` |
-| `@Shadow` visibility | A shadow is safest when it is no more visible than the target (the workspace's example shadows a `public` field as `private`); **never** shadow a `static final` field with a compile-time constant initialiser and expect to read the runtime value — javac inlines constants |
+| `@Shadow` visibility | A shadow is safest when it is no more visible than the target (the example here shadows a `public` field as `private`); **never** shadow a `static final` field with a compile-time constant initialiser and expect to read the runtime value — javac inlines constants |
 | Constants vs fields | `@ModifyConstant` matches only literals in the bytecode; a value that comes from a static field needs `@Redirect` |
 | Side effects of an injection point | `@Redirect` / `@ModifyConstant` really do replace the game's behaviour. Never lose the original on the "I am not enabled" path — `if (!SunTuning.enabled) return PvzpCommon.randRangeInt(theMin, theMax);` in the example is exactly that |
 | Per-tick injection points | Do not do heavy work in `Board::update`, `LawnEvents.TICK` and the like |
@@ -391,7 +391,7 @@ Ordered from cheap to expensive, "smallest credible evidence" first:
 1. **The start-up log**: `./gradlew runClient` and look for whether the target was injected and what your
    own counter or log line says.
 2. **A diagnostic counter plus a unit or end-to-end test**: turn "the injection ran" into assertable state
-   the way `SunTuning.levelsStarted` / `sunDropsRewritten` do. The workspace's `pvz-example-mod` does
+   the way `SunTuning.levelsStarted` / `sunDropsRewritten` do. `pvz-example-mod` does
    exactly this — its `LawnCommonMixin` sets a static flag and a test asserts the bytecode transform ran.
 3. **An end-to-end test on the real loader**: put the built jar into a temporary `mods/` directory, start
    the real `net.fabricmc.loader.impl.launch.knot.KnotClient` in a second JVM with the game's main class

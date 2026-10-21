@@ -100,7 +100,7 @@ only adding log lines.**
 ```
 
 That publishes `cn.enaium.fabricpvz:<your-mod>:<version>` into `~/.m2/repository`, so another project can
-depend on it (the workspace's `PvZ-Portable` end-to-end test consumes a mod jar from mavenLocal exactly this
+depend on it (`PvZ-Portable`'s end-to-end test consumes a mod jar from mavenLocal exactly this
 way). The POM metadata (the MIT licence and the rest) comes from the toolchain's conventions.
 
 ### For a player: a jar in `mods/`

@@ -190,9 +190,9 @@ BoardOverrides.numWaves(40, 50);               // 游戏自己那条分支给 40
 ## 2. 注册一个僵尸
 
 ::: tip 这段代码的出处
-工作区里目前**没有**注册新僵尸的模组，所以下面这段取自 `api-zombie` 自己的用法说明，并与 1.2.5 的版本包
+示例模组里目前**没有**注册新僵尸的，所以下面这段取自 `api-zombie` 自己的用法说明，并与 1.2.5 的版本包
 （游戏 jar 与 `cn.enaium.fabricpvz:fabric-api:1.2.2`）一起以 `javac --release 25` 编译通过。真正的"改僵尸"
-用法在工作区里是 `pvz-mod-95-edition` 的 `ZombieOverrides`（见下），它改的是零售僵尸的出生数值。
+用法是 `pvz-mod-95-edition` 的 `ZombieOverrides`（见下），它改的是零售僵尸的出生数值。
 :::
 
 ```java
@@ -308,9 +308,8 @@ ZombieOverrides.shieldAlwaysAbsorbs(true);               // 整局规则：伤�
 3. **解锁门控只有 `LawnApp::hasSeedType` 一个答案**：`unlockAfter(...)` 指定的种子在玩家手里，
    你的种子才算"拿到"。它同时决定选卡里出不出现与要不要预加载资源。
 4. **名字与提示不走游戏字符串表**：想用游戏的字符串表（多语言）就写 `stringKeyStem(...)`，
-   再在**你自己模组的** `src/main/resources/i18n/<语言>.json` 里给出这些键的译文——i18n 模组会收集
-   每个已加载模组的这份表（工作区的 `pvz-i18n-mod/README.md` 有完整说明），所以你的文字跟着你的 jar 走，
-   不写进别人的表里。
+   再在**你自己模组的** `src/main/resources/i18n/<语言>.json` 里给出这些键的译文——i18n 支持会收集
+   每个已加载模组自己 jar 里的这份表，所以你的文字跟着你的 jar 走，不写进别人的表里。
 5. **`register()` 之后才是内容**：从 `register()` 返回起，种子包、图鉴、`Board::canPlantAt`、
    `Board::addPlant`、选卡界面与 `Plant::fire` 都像对待内置植物一样对待它。
 
